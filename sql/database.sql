@@ -1,0 +1,78 @@
+-- CREER LA BASE DE DONNES INSTADOG
+CREATE DATABASE InstaDog CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- CREER L'UTILISATEUR ADMININSTADOG
+CREATE USER 'adminInstaDog'@'localhost' IDENTIFIED BY 'Inst@D0g';
+
+-- ACCORDER LES PRIVILÈGES À L'UTILISATEUR SUR CETTE BASE DE DONNEES
+GRANT ALL PRIVILEGES ON InstaDog.* TO 'adminInstaDog'@'localhost';
+
+-- APPLIQUER LES PRIVILEGES
+FLUSH PRIVILEGES;
+
+-- UTILISER CETTE BASE DE DONNEES POUR LES CREATIONS DE TABLE
+USE InstaDog; 
+
+-- CREER LA TABLE UTILISATEUR
+CREATE TABLE UserDog ( 
+    id INT(100) AUTO_INCREMENT,
+    email VARCHAR(255), 
+    pwd VARCHAR(255),
+    lastConnectionDate DATETIME,
+    lastName VARCHAR(100), 
+    firstName VARCHAR(100),
+    country VARCHAR(50),
+    city  VARCHAR(50),
+    PRIMARY KEY (id)
+);
+
+-- CREER LA TABLE CHIEN
+CREATE TABLE Dog (
+    id INT(100) AUTO_INCREMENT,
+    nickname VARCHAR(50),
+    birthday DATE,
+    picture VARCHAR(100),
+    userId INT(100),
+    PRIMARY KEY (id),
+    FOREIGN KEY (userId) REFERENCES UserDog(id)
+);
+
+-- CREER LA TABLE ARTICLE
+CREATE TABLE Article (
+    id INT(100) AUTO_INCREMENT,
+    title VARCHAR(100),
+    picture VARCHAR(100),
+    description TEXT,
+    publicationDate DATETIME,
+    dogId INT(100),
+    PRIMARY KEY (id),
+    FOREIGN KEY (dogId) REFERENCES Dog(id)
+);
+
+-- CREER LA TABLE COMMENTAIRE
+CREATE TABLE Comment (
+    id INT(100) AUTO_INCREMENT,
+    comment TEXT,
+    publicationDate DATETIME,
+    articleId INT(100),
+    userId INT(100),
+    PRIMARY KEY (id),
+    FOREIGN KEY (articleId) REFERENCES Article(id),
+    FOREIGN KEY (userId) REFERENCES UserDog(id)
+);
+
+-- CREER LA TABLE RACE
+CREATE TABLE Race (
+    id INT(10) AUTO_INCREMENT,
+    nameRace VARCHAR(100) NOT NULL,
+    PRIMARY KEY(id)
+);
+    
+-- CREER LA TABLE D'ASSOCIATION CHIEN ET RACE
+CREATE TABLE DogRace (
+    dogId INT(100),
+    raceId INT(100),
+    PRIMARY KEY (dogId, raceId),
+    FOREIGN KEY (dogId) REFERENCES Dog(id),
+    FOREIGN KEY (raceId) REFERENCES Race(id)    
+);
