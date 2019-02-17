@@ -11,10 +11,12 @@ if (isset($_POST['ajouterDog'])) {
         // $race2 = $_POST['race2'];
         $userId = $_SESSION['id'];
         $picture = upload($_FILES['picture']);
+
         //var_dump($picture);
         // FAIRE UNE FONCTION QUI VERIFIE SI LE FICHIER A BIEN ETE AJOUTER AVANT D'AJOUTER LE CHIEN
         // LA FONCTION DOIT POUVOIR AUSSI RETOURNER LES ERREURS
         // APPEL DE MA FONCTION QUI AJOUTE UN CHIEN
+        
        $appli->setDog($nickname, $birthday, $picture, $userId);
        echo "<script type='text/javascript'>document.location.replace('index.php');</script>";
     } else {
